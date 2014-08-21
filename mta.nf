@@ -55,6 +55,7 @@ process make_tree {
     file '*.tree*' into tree
       
     script:
+	 """
    	//launch mta
 
 }
@@ -68,6 +69,8 @@ process align_tree {
     file '*.aln' into aln
       
     script:
+
+	 """
 	//launch t_coffe or clustalw
 
 	# Extract the file name w/o the extension
@@ -91,6 +94,8 @@ process evaluate_tree {
 	file '*.sc_list into outsc
 
     script:
+	
+	 """
 	//launch sp, normd, tcs
 	if( params.score=='sp' )
    	
