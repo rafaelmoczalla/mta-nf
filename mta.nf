@@ -61,6 +61,7 @@ process make_tree {
 
 process align_tree {
     input:
+    file fasta_file	
     file tree
     
     output:
@@ -68,9 +69,15 @@ process align_tree {
       
     script:
 	//launch t_coffe or clustalw
+
+	# Extract the file name w/o the extension
+    	fileName=\$(basename "${tree}")
+    	baseName="\${fileName%.*}"
+
 	if( params.msa=='t_coffee' )
-   	
+   		bin/t_coffee ${fasta_file} -usetree ${tree} -output=fasta -n_core=${params.cpus} -outfile=\$basename.aln
 	else if( params.msa == 'clustalw' )
+		bin/clustalw2 -infile=${fasta_file} -usetree=${tree} -output=fasta -outfile=\$basename.aln
 
 }
 
