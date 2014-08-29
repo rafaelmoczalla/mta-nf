@@ -61,6 +61,7 @@ process make_tree {
     
 	output:
 	file '*.dnd' into tree mode flatten
+	file '*.dnd' into tree_result
       
     	script:
  	
@@ -75,7 +76,8 @@ process align_tree {
   	file t from tree
     
 	output:
-		file '*.aln' into aln mode flatten
+	file '*.aln' into aln mode flatten
+	file '*.aln' into aln_result
 
  	script:
 	//launch t_coffee or clustalw
@@ -97,41 +99,95 @@ process align_tree {
 process score_tree {
     	input:
 	file a from aln
-    
+    	
 	output:
-	file result into sc_file
+	file '*.sc' into sc_file
 
 	script:
 	//launch sp, normd, tcs
+
 	 
 	if( params.score=='sp' )
+
 	"""
 		fileName=\$(basename "${a}")
 		baseName="\${fileName%.*}"
-		
+
 		sc=`t_coffee -other_pg fastal -i ${a} --eval_aln -g ${params.gop} -e ${params.gep} -a --mat ${params.matrix} | grep Score: | cut -d' ' -f2`
-		echo "\$baseName \$sc" > result
+		echo "\$baseName \$sc" > \${baseName}.sc
 	"""
 	else if( params.score == 'normd' )
+
 	"""
 		fileName=\$(basename "${a}")
 		baseName="\${fileName%.*}"
+	
+	
 		sc=`normd ${a}`
-		echo "\$baseName \$sc" > result
+		echo "\$baseName \$sc" > \${baseName}.sc
 	"""
 }
 
+
 bigFile = sc_file.collectFile(name: 'result')
+all_aln_result = aln_result.toList()
 
 process evaluate_scores {
 	input:
+	file fasta_file
 	file bigFile
-
+	file all_aln_result
+	file tree_result
+	
+	output:
+	file "*.sc" into res_sc
+	file "*.final.dnd" into res_tree
+	file "*.final.aln" into res_aln
 	script:
 	"""
-	echo ${bigFile}
+	
+	fileName=\$(basename "${fasta_file}")
+	baseName="\${fileName%.*}"
+
+	oldIFS=\$IFS
+	IFS=\$'\n'
+	max_sc=-99999.99999
+	for line in \$(cat ${bigFile}); do
+		name=`echo \$line | cut -d' ' -f1`
+		sc=`echo \$line | cut -d' ' -f2`
+		echo  \$name \$line
+		if (( \$(echo "\${sc} > \${max_sc}" | bc -l) )); then
+			max_sc=\${sc}
+			maxfile=\${name}
+		fi
+	done
+	
+	echo "Maximum: \${maxfile} \${max_sc}" >> ${bigFile}
+	cp ${bigFile} \${baseName}.sc
+
+	cp \${maxfile}.dnd \${baseName}.final.dnd
+	cp \${maxfile}.aln \${baseName}.final.aln
+
+	IFS=\$oldIFS
+
 	"""
 
 }
+
+res_sc.subscribe { it ->
+    log.info "Copying results log file to results: ${result_path}/${it.name}"
+    it.copyTo(result_path)
+    }
+
+res_tree.subscribe { it ->
+    log.info "Copying the guide tree to results: ${result_path}/${it.name}"
+    it.copyTo(result_path)
+    }
+
+res_aln.subscribe { it ->
+    log.info "Copying the alignment to results: ${result_path}/${it.name}"
+    it.copyTo(result_path)
+    }
+
 
 
