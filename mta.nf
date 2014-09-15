@@ -30,7 +30,7 @@ params.ntree = 10
 params.msa = 't_coffee'
 params.score = 'sp'
 params.cpu = 1
-params.output      = './results'
+params.output = './results'
 params.gop = -11
 params.gep = -1
 params.matrix = "blosum62mt" 
@@ -80,7 +80,7 @@ process make_tree {
     file '*.dnd' into tree mode flatten
     file '*.dnd' into tree_result
       
-        script:
+    script:
 
     """
     mgtree -seq ${fasta_file} -ntree ${params.ntree}
@@ -105,6 +105,7 @@ process align_tree {
         baseName="\${fileName%.*}"
         t_coffee ${fasta_file} -usetree ${t} -output=fasta -n_core=${params.cpu} -outfile=\$baseName.aln
     """
+
     else if( params.msa == 'clustalw' )
     """
         fileName=\$(basename "${t}")
@@ -114,7 +115,7 @@ process align_tree {
 }
 
 process score_tree {
-        input:
+    input:
     file a from aln
 
     output:
@@ -125,7 +126,6 @@ process score_tree {
 
 
     if( params.score=='sp' )
-
     """
         fileName=\$(basename "${a}")
         baseName="\${fileName%.*}"
@@ -133,6 +133,7 @@ process score_tree {
         sc=`t_coffee -other_pg fastal -i ${a} --eval_aln -g ${params.gop} -e ${params.gep} -a --mat ${params.matrix} | grep Score: | cut -d' ' -f2`
         echo "\$baseName \$sc" > \${baseName}.sc
     """
+    
     else if( params.score == 'normd' )
 
     """
@@ -152,24 +153,24 @@ all_aln_result = aln_result.toList()
 process evaluate_scores {
     input:
     file fasta_file
-    file bigFile
     file all_aln_result
     file tree_result
+    file 'big_result' from bigFile
 
     output:
     file "*.sc" into res_sc
     file "*.dnd" into res_tree
     file "*.aln" into res_aln
+
     script:
     """
-
     fileName=\$(basename "${fasta_file}")
     baseName="\${fileName%.*}"
 
     oldIFS=\$IFS
     IFS=\$'\n'
     max_sc=-99999.99999
-    for line in \$(cat ${bigFile}); do
+    for line in \$(cat big_result); do
         name=`echo \$line | cut -d' ' -f1`
         sc=`echo \$line | cut -d' ' -f2`
         echo  \$name \$line
@@ -179,8 +180,8 @@ process evaluate_scores {
         fi
     done
 
-    echo "Maximum: \${maxfile} \${max_sc}" >> ${bigFile}
-    cp ${bigFile} \${baseName}.sc
+    cp big_result \${baseName}.sc
+    echo "Maximum: \${maxfile} \${max_sc}" >> \${baseName}.sc
 
     cp \${maxfile}.dnd \${baseName}.dnd
     cp \${maxfile}.aln \${baseName}.aln
