@@ -9,13 +9,12 @@ import org.apache.commons.lang.StringUtils
  * Miquel Orobitg <miquelorobitg@gmail.com> 
  */
 
-params.seq = "$HOME/sample.fa"
+params.seq = './tutorial/12asA_1atiA.fasta'
 params.ntree = 10
-params.msa = "t_coffee"
-params.score = "sp"
+params.msa = 't_coffee'
+params.score = 'sp'
 params.cpu = 1
 params.output      = './results'
-
 params.gep = -11
 params.gop = -1
 params.matrix = "blosum62mt" 
