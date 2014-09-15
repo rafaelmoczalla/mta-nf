@@ -174,12 +174,12 @@ where the pipeline is going to be launched, with the following content:
     task {
       processor='sge'
       queue='<your queue name>'
-      clusterOptions = '<SGE options>'
+      clusterOptions = '<SGE parameters>'
     }
 
 In doing that, tasks will be executed through the `qsub` SGE command, and so your pipeline will behave like any
 other SGE job script, with the benefit that *Nextflow* will automatically and transparently manage the tasks
-synchronisation, file(s) staging/un-staging, etc. In clusterOptions, the user can specify the name of the job (-N Name), the e-mail (-M email), the sge enviroment (-pe smp 8), ...
+synchronisation, file(s) staging/un-staging, etc. In clusterOptions, the user can specify the SGE parameters such as the name of the job (-N Name), the e-mail (-M email), the sge enviroment (-pe smp 8), ...
 
 Alternatively the same declaration can be defined in the file `$HOME/.nextflow/config`.
 
