@@ -101,9 +101,11 @@ Run locally
 **Command line**
 
 * Install all the dependencies running the bash script install.sh.
+
 	`$ bash install.sh`
 
 * Run nextflow mta-nf command line indication all the input parameters. For example:
+
 	`$ ./nextflow run mta-nf --seq /home/user/seq.fasta --ntree 100 --msa t_coffee --score sp --cpu 4 --output /home/user/results`
 
 **Configuration file**
@@ -124,7 +126,7 @@ Run locally
 
 * If you are running MTA-NF with a configuration file different to the `nextflow.config`, use the following command line:
 
-$ nextflow -c /home/user/example.config run mta-nf
+	`$ nextflow -c /home/user/example.config run mta-nf`
 
 * More information in http://www.nextflow.io/docs/latest/config.html
 
@@ -143,7 +145,7 @@ If you have Docker installed in your computer pull this image by entering the fo
     $ docker pull cbcrg/mta-nf
   
   
-After that you will be able to run Grape-NF using the following command line: 
+After that you will be able to run MTA-NF using the following command line: 
 
     $ nextflow run cbcrg/mta-nf -with-docker
 
