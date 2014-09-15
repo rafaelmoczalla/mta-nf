@@ -32,47 +32,47 @@ Pipeline parameters
 **--seq**  
    
 * The location of the sequences fasta file.
-* Involved in the task: make_tree, align_tree, evaluate_scores
+* Involved in the task: make_tree, align_tree, evaluate_scores.
 	* By default is set to the mta-nf's localization: './tutorial/.fa'
-  	`  $ ./nextflow run mta.nf --seq /home/user/seq/example.fa  `
+  	`  $ ./nextflow run mta.nf --seq /home/user/seq/example.fa`
 
 **--ntree**  
    
-* Number of of guide trees to align and evaluate. 
-* By default is set to 10 guide trees.
-	* Involved in the task: make_tree
-  	`  $ ./nextflow run mta.nf --ntree 100  `
+* Number of of guide trees to align and evaluate.
+* Involved in the task: make_tree.
+	* By default is set to 10 guide trees
+  	`  $ ./nextflow run mta.nf --ntree 100`
 
 **--msa**  
    
 * The MSA tool to produce the alignemnts.
-* Two options: t_coffee, clustalw
-* Involved in the task: align_tree
-* By default is set to T-Coffee'
-  `  $ ./nextflow run mta.nf --msa t_coffee  `
+* Two options: t_coffee, clustalw.
+* Involved in the task: align_tree.
+	* By default is set to T-Coffee'
+	`  $ ./nextflow run mta.nf --msa t_coffee`
 
 **--score**  
    
 * The evaluation score to choose an alignemnt.
-* Two options: sp, normd
-* Involved in the task: score_tree
+* Two options: sp, normd.
+* Involved in the task: score_tree.
 	* By default is set to Sum-of-Pairs (sp)'
-  	`  $ ./nextflow run mta.nf --score sp  `
+  	`  $ ./nextflow run mta.nf --score sp`
 
 **--cpu** 
    
 * Sets the number of CPUs used in every tasks (default 1).  
-* Involved in the task: align_tree
-	* By default is set to the number of the available cores.  
-  	`  $ ./nextflow run mta-nf --cpu 10  `
+* Involved in the task: align_tree.
+	* By default is set to the number of the available cores
+  	`  $ ./nextflow run mta-nf --cpu 10`
   
   
 **--output** 
    
 * Specifies the folder where the results will be stored for the user.  
 * It does not matter if the folder does not exist.
-  	* By default is set to mta-nf's folder: './results' 
-  	`  $ ./nextflow run mta-nf --output /home/user/my_results  `
+  	* By default is set to mta-nf's folder: './results'
+  	`  $ ./nextflow run mta-nf --output /home/user/my_results`
 
 
 Dependencies 
