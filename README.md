@@ -34,37 +34,59 @@ Pipeline parameters
 * The location of the sequences fasta file.
 * Involved in the task: make_tree, align_tree, evaluate_scores.
 	* By default is set to the mta-nf's localization: './tutorial/.fa'
-  	`  $ ./nextflow run mta.nf --seq /home/user/seq/example.fa`
+  	`	$ ./nextflow run mta.nf --seq /home/user/seq/example.fa`
 
 **--ntree**  
    
 * Number of of guide trees to align and evaluate.
 * Involved in the task: make_tree.
 	* By default is set to 10 guide trees
-  	`  $ ./nextflow run mta.nf --ntree 100`
+  	`	$ ./nextflow run mta.nf --ntree 100`
 
 **--msa**  
    
 * The MSA tool to produce the alignemnts.
 * Two options: t_coffee, clustalw.
 * Involved in the task: align_tree.
-	* By default is set to T-Coffee'
-	`  $ ./nextflow run mta.nf --msa t_coffee`
+	* By default is set to 'T-Coffee'
+	`	$ ./nextflow run mta.nf --msa t_coffee`
 
 **--score**  
    
 * The evaluation score to choose an alignemnt.
 * Two options: sp, normd.
 * Involved in the task: score_tree.
-	* By default is set to Sum-of-Pairs (sp)'
-  	`  $ ./nextflow run mta.nf --score sp`
+	* By default is set to 'Sum-of-Pairs (sp)'
+  	`	$ ./nextflow run mta.nf --score sp`
+
+**--gop** 
+   
+* Sets the Gap Opening Penalty. Only used with SP score.  
+* Involved in the task: score_tree.
+	* By default is set to -11
+  	`	$ ./nextflow run mta-nf --score sp --gop -11`
+
+**--gep** 
+   
+* Sets the Gap Extended Penalty. Only used with SP score.  
+* Involved in the task: score_tree.
+	* By default is set to -1
+  	`	$ ./nextflow run mta-nf --score sp --gep -1`
+
+**--matrix** 
+   
+* Sets the Distance Matrix. Only used with SP score.  
+* Involved in the task: score_tree.
+* Options: blosum30mt, blosum40mt, blosum45mt, blosum50mt, blosum55mt, blosum62mt, blosum80mt, idmat, dna_idmat, pam120mt, pam160mt, pam250mt, pam350mt, md_40mt, md_120mt, md_250mt, md_350mt.
+	* By default is set to 'blosum62mt'
+  	`	$ ./nextflow run mta-nf --score sp --gep -1`
 
 **--cpu** 
    
-* Sets the number of CPUs used in every tasks (default 1).  
+* Sets the number of CPUs used in every tasks.  
 * Involved in the task: align_tree.
 	* By default is set to the number of the available cores
-  	`  $ ./nextflow run mta-nf --cpu 10`
+  	`	$ ./nextflow run mta-nf --cpu 10`
   
   
 **--output** 
@@ -72,11 +94,14 @@ Pipeline parameters
 * Specifies the folder where the results will be stored for the user.  
 * It does not matter if the folder does not exist.
   	* By default is set to mta-nf's folder: './results'
-  	`  $ ./nextflow run mta-nf --output /home/user/my_results`
+  	`	$ ./nextflow run mta-nf --output /home/user/my_results`
+
 
 
 Dependencies 
 ------------
 
-    
-   
+ * T-Coffee - http://www.tcoffee.org/Projects/tcoffee/index.html
+ * ClustalW - http://www.clustal.org/clustal2/
+ * Normd - ftp://ftp-igbmc.u-strasbg.fr/pub/NORMD/
+

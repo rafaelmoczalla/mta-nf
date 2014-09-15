@@ -15,8 +15,8 @@ params.msa = 't_coffee'
 params.score = 'sp'
 params.cpu = 1
 params.output      = './results'
-params.gep = -11
-params.gop = -1
+params.gop = -11
+params.gep = -1
 params.matrix = "blosum62mt" 
 
 
@@ -140,8 +140,8 @@ process evaluate_scores {
 	
 	output:
 	file "*.sc" into res_sc
-	file "*.final.dnd" into res_tree
-	file "*.final.aln" into res_aln
+	file "*.dnd" into res_tree
+	file "*.aln" into res_aln
 	script:
 	"""
 	
@@ -164,8 +164,8 @@ process evaluate_scores {
 	echo "Maximum: \${maxfile} \${max_sc}" >> ${bigFile}
 	cp ${bigFile} \${baseName}.sc
 
-	cp \${maxfile}.dnd \${baseName}.final.dnd
-	cp \${maxfile}.aln \${baseName}.final.aln
+	cp \${maxfile}.dnd \${baseName}.dnd
+	cp \${maxfile}.aln \${baseName}.aln
 
 	IFS=\$oldIFS
 
