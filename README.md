@@ -101,12 +101,14 @@ Run locally
 **Command line**
 
 * Install all the dependencies running the bash script install.sh.
-	$ bash install.sh
+	
+$ bash install.sh
 
 * Run nextflow mta-nf command line indication all the input parameters. For example:
-	$ ./nextflow run mta-nf --seq /home/user/seq.fasta --ntree 100 --msa t_coffee --score sp --cpu 4 --output /home/user/results
+	
+$ ./nextflow run mta-nf --seq /home/user/seq.fasta --ntree 100 --msa t_coffee --score sp --cpu 4 --output /home/user/results
 
-**Config file**
+**Configuration file**
 
 * The user can modify the nextflow.config or create a new config file adding the parameters information:
 
@@ -122,9 +124,9 @@ Run locally
 		output = '/home/user/results'
 	}
 
-* If you are running MTA-NF with a config file different to the nextflow.config, use the following command line:
+* If you are running MTA-NF with a configuration file different to the `nextflow.config`, use the following command line:
 
-	$ ./nextflow -c /home/user/example.config run mta-nf
+$ nextflow -c /home/user/example.config run mta-nf
 
 * More information in http://www.nextflow.io/docs/latest/config.html
 
