@@ -101,12 +101,10 @@ Run locally
 **Command line**
 
 * Install all the dependencies running the bash script install.sh.
-	
-$ bash install.sh
+	`$ bash install.sh`
 
 * Run nextflow mta-nf command line indication all the input parameters. For example:
-	
-$ ./nextflow run mta-nf --seq /home/user/seq.fasta --ntree 100 --msa t_coffee --score sp --cpu 4 --output /home/user/results
+	`$ ./nextflow run mta-nf --seq /home/user/seq.fasta --ntree 100 --msa t_coffee --score sp --cpu 4 --output /home/user/results`
 
 **Configuration file**
 
