@@ -169,7 +169,8 @@ process evaluate_scores {
 
     oldIFS=\$IFS
     IFS=\$'\n'
-    max_sc=-99999.99999
+    max_sc=-99999999.999999
+    maxfile=`echo "null"`
     for line in \$(cat big_result); do
         name=`echo \$line | cut -d' ' -f1`
         sc=`echo \$line | cut -d' ' -f2`
