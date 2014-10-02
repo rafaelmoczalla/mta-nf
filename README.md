@@ -52,7 +52,7 @@ Pipeline parameters
 **--score**  
    
 * The evaluation score to choose an alignemnt.
-* Two options: sp, normd.
+* Two options: sp, normd, tcs (t_coffee score)
 * Involved in the task: score_tree.
 	* By default is set to 'Sum-of-Pairs (sp)'    
   	`	$ ./nextflow run mta.nf --score sp`
