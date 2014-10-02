@@ -57,7 +57,7 @@ log.info "\n"
  * Input parameters validation
  */
 
-if( !(params.msa in ['t_coffee','clustalw'])) { exit 1, "Invalid msa tool: '${params.msa}'" }
+if( !(params.msa in ['t_coffee','clustalw', 'clustalo'])) { exit 1, "Invalid msa tool: '${params.msa}'" }
 if( !(params.score in ['sp','normd', 'tcs'])) { exit 1, "Invalid score: '${params.score}'" }
 
 fasta_file = file(params.seq)
@@ -112,6 +112,25 @@ process align_tree {
         baseName="\${fileName%.*}"
         clustalw2 -infile=${fasta_file} -usetree=${t} -output=fasta -outfile=\$baseName.aln
     """
+
+    else if( params.msa == 'clustalo' )
+    """
+        fileName=\$(basename "${t}")
+        baseName="\${fileName%.*}"
+	t2=`echo "outtree"`
+
+        echo "Y" > \${baseName}.tmp
+	echo "${t}" >> \${baseName}.tmp
+	echo "W" >> \${baseName}.tmp
+	echo "F" >> \${baseName}.tmp
+	echo "R" >> \${baseName}.tmp
+	echo "Q" >> \${baseName}.tmp
+
+	retree < \${baseName}.tmp
+	
+	clustalo -i ${fasta_file} --guidetree-in=\${t2} --outfmt=fa -o \$baseName.aln	
+    """
+
 }
 
 process score_tree {
@@ -153,6 +172,7 @@ process score_tree {
 	sc=`cat \${baseName}.tcs | grep SCORE= | cut -d'=' -f2`
 	echo "\$baseName \$sc" > \${baseName}.sc
     """
+    
 }
 
 

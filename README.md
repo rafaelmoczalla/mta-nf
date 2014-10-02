@@ -1,7 +1,7 @@
 MTA-NF
 ======
 
-MTA-NF is a Multiple Sequence Alignment pipeline to align multiple guide-tree variations for the same input sequences, evaluating the alignments obtained and selecting the best one as result. MTA method can be applied to any progressive method that accepts guide trees as an input parameter (in this version accepts T-Coffee and ClustalW). In addition, the method also allows different evaluation metrics to select the best multiple guide trees (sp, normd). The aim is to find a variation of the original tree that provides a more accurate alignment than the original one produced. MTA-NF is implemented using the [Nextflow](http://www.nextflow.io) framework.
+MTA-NF is a Multiple Sequence Alignment pipeline to align multiple guide-tree variations for the same input sequences, evaluating the alignments obtained and selecting the best one as result. MTA method can be applied to any progressive method that accepts guide trees as an input parameter (in this version accepts T-Coffee, ClustalW and ClustalO). In addition, the method also allows different evaluation metrics to select the best multiple guide trees (sp, normd). The aim is to find a variation of the original tree that provides a more accurate alignment than the original one produced. MTA-NF is implemented using the [Nextflow](http://www.nextflow.io) framework.
 
 
 Quick start 
@@ -44,7 +44,7 @@ Pipeline parameters
 **--msa**  
    
 * The MSA tool to produce the alignemnts.
-* Two options: t_coffee, clustalw.
+* Two options: t_coffee, clustalw, clustalo.
 * Involved in the task: align_tree.
 	* By default is set to 'T-Coffee'  
 	`$ ./nextflow run mta.nf --msa t_coffee`
