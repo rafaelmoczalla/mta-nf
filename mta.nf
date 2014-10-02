@@ -58,7 +58,7 @@ log.info "\n"
  */
 
 if( !(params.msa in ['t_coffee','clustalw'])) { exit 1, "Invalid msa tool: '${params.msa}'" }
-if( !(params.score in ['sp','normd'])) { exit 1, "Invalid score: '${params.score}'" }
+if( !(params.score in ['sp','normd', 'tcs'])) { exit 1, "Invalid score: '${params.score}'" }
 
 fasta_file = file(params.seq)
 result_path = file(params.output)
@@ -143,6 +143,15 @@ process score_tree {
 
         sc=`normd ${a}`
         echo "\$baseName \$sc" > \${baseName}.sc
+    """
+
+    else if( params.score == 'tcs' )
+    """
+        fileName=\$(basename "${a}")
+        baseName="\${fileName%.*}"
+	t_coffee -infile ${a} -evaluate -method proba_pair -output score_ascii -outfile \${baseName}.tcs
+	sc=`cat \${baseName}.tcs | grep SCORE= | cut -d'=' -f2`
+	echo "\$baseName \$sc" > \${baseName}.sc
     """
 }
 
