@@ -29,8 +29,8 @@ params.seq = "$baseDir/tutorial/12asA_1atiA.fasta"
 params.ntree = 10
 params.msa = 't_coffee'
 params.score = 'sp'
-params.cpu = 1
-params.node = 1
+params.cpus = 1
+params.nodes = 1
 params.output = './results'
 params.gop = -11
 params.gep = -1
@@ -43,7 +43,7 @@ log.info "Fasta sequence    : ${params.seq}"
 log.info "Number of trees   : ${params.ntree}"
 log.info "MSA method        : ${params.msa}"
 log.info "Score             : ${params.score}"
-log.info "cpus              : ${params.cpu}"
+log.info "cpus              : ${params.cpus}"
 log.info "Nodes             : ${params.nodes}"
 log.info "ouput             : ${params.output}"
 if( params.score=='sp' )  {
@@ -89,7 +89,7 @@ process make_tree {
     """
 }
 
-if ( params.msa=='t_coffee' && params.node < params.ntree ){
+if ( params.msa=='t_coffee' && params.nodes < params.ntree ){
 
 	process build_tc_lib {
 		input:
@@ -120,10 +120,10 @@ if ( params.msa=='t_coffee' && params.node < params.ntree ){
 
 	    script:
 	    """
-		echo ${params.cpu}
+		echo ${params.cpus}
 		fileName=\$(basename "${t}")
 		baseName="\${fileName%.*}"
-		t_coffee ${fasta_file} -usetree ${t} -lib ${tc_lib} -output=fasta -n_core=${params.cpu} -outfile=\$baseName.aln
+		t_coffee ${fasta_file} -usetree ${t} -lib ${tc_lib} -output=fasta -n_core=${params.cpus} -outfile=\$baseName.aln
 
 	    """
 	   
@@ -148,7 +148,7 @@ else {
 	    """
 		fileName=\$(basename "${t}")
 		baseName="\${fileName%.*}"
-		t_coffee ${fasta_file} -usetree ${t} -output=fasta -n_core=${params.cpu} -outfile=\$baseName.aln
+		t_coffee ${fasta_file} -usetree ${t} -output=fasta -n_core=${params.cpus} -outfile=\$baseName.aln
 	    """
 	    else if( params.msa == 'clustalw' )
 	    """
@@ -172,7 +172,7 @@ else {
 
 		retree < \${baseName}.tmp
 	
-		clustalo -i ${fasta_file} --guidetree-in=\${t2} --outfmt=fa --threads=${params.cpu} -o \$baseName.aln	
+		clustalo -i ${fasta_file} --guidetree-in=\${t2} --outfmt=fa --threads=${params.cpus} -o \$baseName.aln	
 	    """
 
 	}

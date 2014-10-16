@@ -79,7 +79,7 @@ Pipeline parameters
 	* By default is set to 'blosum62mt'    
   	`$ ./nextflow run mta-nf --score sp --matrix blosum62mt`
 
-**--cpu** 
+**--cpus** 
    
 * Sets the number of CPUs used in every tasks.  
 * Involved in the task: align_tree.
