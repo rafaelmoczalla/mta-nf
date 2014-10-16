@@ -30,6 +30,7 @@ params.ntree = 10
 params.msa = 't_coffee'
 params.score = 'sp'
 params.cpu = 1
+params.node = 1
 params.output = './results'
 params.gop = -11
 params.gep = -1
@@ -43,6 +44,7 @@ log.info "Number of trees   : ${params.ntree}"
 log.info "MSA method        : ${params.msa}"
 log.info "Score             : ${params.score}"
 log.info "cpus              : ${params.cpu}"
+log.info "Nodes             : ${params.nodes}"
 log.info "ouput             : ${params.output}"
 if( params.score=='sp' )  {
 log.info "GOP               : ${params.gop}"
@@ -87,50 +89,93 @@ process make_tree {
     """
 }
 
-process align_tree {
-    input:
-    file fasta_file
-    file t from tree
-    
-    output:
-    file '*.aln' into aln mode flatten
-    file '*.aln' into aln_result
+if ( params.msa=='t_coffee' && params.node < params.ntree ){
 
-    script:
-    //launch t_coffee or clustalw
+	process build_tc_lib {
+		input:
+		file fasta_file
 
-    if( params.msa=='t_coffee' )
-    """
-        fileName=\$(basename "${t}")
-        baseName="\${fileName%.*}"
-        t_coffee ${fasta_file} -usetree ${t} -output=fasta -n_core=${params.cpu} -outfile=\$baseName.aln
-    """
-
-    else if( params.msa == 'clustalw' )
-    """
-        fileName=\$(basename "${t}")
-        baseName="\${fileName%.*}"
-        clustalw2 -infile=${fasta_file} -usetree=${t} -output=fasta -outfile=\$baseName.aln
-    """
-
-    else if( params.msa == 'clustalo' )
-    """
-        fileName=\$(basename "${t}")
-        baseName="\${fileName%.*}"
-	t2=`echo "outtree"`
-
-        echo "Y" > \${baseName}.tmp
-	echo "${t}" >> \${baseName}.tmp
-	echo "W" >> \${baseName}.tmp
-	echo "F" >> \${baseName}.tmp
-	echo "R" >> \${baseName}.tmp
-	echo "Q" >> \${baseName}.tmp
-
-	retree < \${baseName}.tmp
+		output:
+		file '*.lib' into tc_lib
 	
-	clustalo -i ${fasta_file} --guidetree-in=\${t2} --outfmt=fa -o \$baseName.aln	
-    """
+		script:
+		"""
+		fileName=\$(basename "${fasta_file}")
+        	baseName="\${fileName%.*}"
 
+		t_coffee ${fasta_file} -lib_only -out_lib \$baseName.lib
+		"""
+	}
+	
+	process align_tree {
+	    input:
+	    file fasta_file
+	    file tc_lib from tc_lib.first()
+	    file t from tree
+	    
+
+	    output:
+	    file '*.aln' into aln mode flatten
+	    file '*.aln' into aln_result
+
+	    script:
+	    """
+		echo ${params.cpu}
+		fileName=\$(basename "${t}")
+		baseName="\${fileName%.*}"
+		t_coffee ${fasta_file} -usetree ${t} -lib ${tc_lib} -output=fasta -n_core=${params.cpu} -outfile=\$baseName.aln
+
+	    """
+	   
+	}
+
+
+}
+else {
+	process align_tree {
+	    input:
+	    file fasta_file
+	    file t from tree
+
+	    output:
+	    file '*.aln' into aln mode flatten
+	    file '*.aln' into aln_result
+
+	    script:
+	    //launch t_coffee or clustalw
+
+	    if( params.msa=='t_coffee')
+	    """
+		fileName=\$(basename "${t}")
+		baseName="\${fileName%.*}"
+		t_coffee ${fasta_file} -usetree ${t} -output=fasta -n_core=${params.cpu} -outfile=\$baseName.aln
+	    """
+	    else if( params.msa == 'clustalw' )
+	    """
+		fileName=\$(basename "${t}")
+		baseName="\${fileName%.*}"
+		clustalw2 -infile=${fasta_file} -usetree=${t} -output=fasta -outfile=\$baseName.aln
+	    """
+
+	    else if( params.msa == 'clustalo' )
+	    """
+		fileName=\$(basename "${t}")
+		baseName="\${fileName%.*}"
+		t2=`echo "outtree"`
+
+		echo "Y" > \${baseName}.tmp
+		echo "${t}" >> \${baseName}.tmp
+		echo "W" >> \${baseName}.tmp
+		echo "F" >> \${baseName}.tmp
+		echo "R" >> \${baseName}.tmp
+		echo "Q" >> \${baseName}.tmp
+
+		retree < \${baseName}.tmp
+	
+		clustalo -i ${fasta_file} --guidetree-in=\${t2} --outfmt=fa --threads=${params.cpu} -o \$baseName.aln	
+	    """
+
+	}
 }
 
 process score_tree {
