@@ -84,14 +84,14 @@ Pipeline parameters
 * Sets the number of CPUs used in every tasks.  
 * Involved in the task: align_tree.
 	* By default is set to the number of the available cores.   
-  	`$ ./nextflow run mta-nf --cpu 10`
+  	`$ ./nextflow run mta-nf --cpus 10`
 
 **--nodes** 
    
 * If you run in a cluster and the msa method is t_coffee, sets the number of nodes reserved to run the pipeline. Useful for the t_coffee library optimization.  
 * Involved in the task: build_tc_lib, align_tree.
 	* By default is set to 1.   
-  	`$ ./nextflow run mta-nf --node 16`
+  	`$ ./nextflow run mta-nf --nodes 16`
   
 **--output** 
    
@@ -112,7 +112,7 @@ Install all the dependencies running the bash script install.sh.
 
 Run nextflow mta-nf command line indication all the input parameters. For example:
 
-	$ ./nextflow run mta-nf --seq /home/user/seq.fasta --ntree 100 --msa t_coffee --score sp --cpu 4 --output /home/user/results
+	$ ./nextflow run mta-nf --seq /home/user/seq.fasta --ntree 100 --msa t_coffee --score sp --cpus 4 --output /home/user/results
 
 **Configuration file**
 
@@ -126,7 +126,7 @@ The user can modify the nextflow.config or create a new config file adding the p
 		gop = '-11'
 		gep = '-1'
 		matrix = 'blosum62mt'
-		cpu = 4
+		cpus = 4
 		output = '/home/user/results'
 	}
 
