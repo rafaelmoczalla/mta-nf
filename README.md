@@ -85,13 +85,6 @@ Pipeline parameters
 * Involved in the task: align_tree.
 	* By default is set to the number of the available cores.   
   	`$ ./nextflow run mta-nf --cpus 10`
-
-**--nodes** 
-   
-* If you run in a cluster and the msa method is t_coffee, sets the number of nodes reserved to run the pipeline. Useful for the t_coffee library optimization.  
-* Involved in the task: build_tc_lib, align_tree.
-	* By default is set to 1.   
-  	`$ ./nextflow run mta-nf --nodes 16`
   
 **--output** 
    

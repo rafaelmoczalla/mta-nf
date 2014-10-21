@@ -30,7 +30,6 @@ params.ntree = 10
 params.msa = 't_coffee'
 params.score = 'sp'
 params.cpus = 1
-params.nodes = 1
 params.output = './results'
 params.gop = -11
 params.gep = -1
@@ -44,7 +43,6 @@ log.info "Number of trees   : ${params.ntree}"
 log.info "MSA method        : ${params.msa}"
 log.info "Score             : ${params.score}"
 log.info "cpus              : ${params.cpus}"
-log.info "Nodes             : ${params.nodes}"
 log.info "ouput             : ${params.output}"
 if( params.score=='sp' )  {
 log.info "GOP               : ${params.gop}"
@@ -89,7 +87,7 @@ process make_tree {
     """
 }
 
-if ( params.msa=='t_coffee' && params.nodes <= params.ntree ){
+if ( params.msa=='t_coffee' ){
 
 	process build_tc_lib {
 		input:
@@ -126,7 +124,6 @@ if ( params.msa=='t_coffee' && params.nodes <= params.ntree ){
 		t_coffee ${fasta_file} -usetree ${t} -lib ${tc_lib} -output=fasta -n_core=${params.cpus} -outfile=\$baseName.aln
 
 	    """
-	   
 	}
 
 
@@ -144,13 +141,7 @@ else {
 	    script:
 	    //launch t_coffee or clustalw
 
-	    if( params.msa=='t_coffee')
-	    """
-		fileName=\$(basename "${t}")
-		baseName="\${fileName%.*}"
-		t_coffee ${fasta_file} -usetree ${t} -output=fasta -n_core=${params.cpus} -outfile=\$baseName.aln
-	    """
-	    else if( params.msa == 'clustalw' )
+	    if( params.msa == 'clustalw' )
 	    """
 		fileName=\$(basename "${t}")
 		baseName="\${fileName%.*}"
