@@ -89,7 +89,7 @@ process make_tree {
     """
 }
 
-if ( params.msa=='t_coffee' && params.nodes < params.ntree ){
+if ( params.msa=='t_coffee' && params.nodes <= params.ntree ){
 
 	process build_tc_lib {
 		input:
