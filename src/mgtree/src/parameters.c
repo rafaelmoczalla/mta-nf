@@ -9,8 +9,8 @@ Parameters *declare_parameters(){
 
     P = vcalloc(1, sizeof(Parameters));
     P->seqfile = (char *) vcalloc(FILENAMELEN, sizeof(char));
-    P->dm_method = (char *) vcalloc(MAXNAMES, sizeof(char));
-    P->outdir = (char *) vcalloc(FILENAMELEN, sizeof(char));
+    P->mode = (char *) vcalloc(MAXNAMES, sizeof(char));
+    P->output = (char *) vcalloc(FILENAMELEN, sizeof(char));
     
     P->isseq=0;
     return P;
@@ -19,19 +19,18 @@ Parameters *declare_parameters(){
 void free_parameters(Parameters *P){
 
     vfree(P->seqfile);
-    vfree(P->dm_method);
-    vfree(P->outdir);
-
+    vfree(P->mode);
+    vfree(P->output);
     free_fname(P->F);
     
     vfree(P);
 }
 
 
-Parameters *default_values(Parameters *P, char *outdir){
+Parameters *default_values(Parameters *P, char *output){
  
-    sprintf(P->outdir, "%s", outdir);
-    sprintf(P->dm_method, "ktup");
+    sprintf(P->output, "%s", output);
+    sprintf(P->mode, "multiple");
     P->ntree = 10;
     P->random_percentage=50;
     return P;
@@ -88,6 +87,21 @@ Parameters *read_parameters(int argc, char** argv){
         if(strm(argv[i], "-seq")){
             i++;
         }
+        else if(strm(argv[i], "-mode")){
+			i++;
+			if(i<argc && argv[i][0] != '-'){
+				if(strm(argv[i], "single") || strm(argv[i], "multiple")){
+					sprintf(P->mode, "%s", argv[i]);
+				}
+				else {
+					fprintf(stderr, "ERROR - Parameter -mode: Wrong mode (single, multiple)\n");
+				}
+			}
+			else {
+				fprintf(stderr, "ERROR - Parameter -mode: No Value\n");
+				exit(EXIT_FAILURE);
+			}
+		}
         else if(strm(argv[i], "-ntree")){
             i++;
             if(i<argc && argv[i][0] != '-'){
@@ -98,23 +112,7 @@ Parameters *read_parameters(int argc, char** argv){
                 exit(EXIT_FAILURE);
             }
         }
-        else if(strm(argv[i], "-dm_method")){
-            i++;
-            if(i<argc && argv[i][0] != '-'){
-                if(strm(argv[i], "ktup")){ /*I put this parameter if we want to use another dm methods. At the moment, ktup DM*/
-                    sprintf(P->dm_method, "%s", argv[i]);
-                }
-                else {
-                    fprintf(stderr, "ERROR - Parameter -dm_method: Wrong distance matrix values (ktup)\n");
-                    exit(EXIT_FAILURE);
-                }
-            }
-            else {
-                fprintf(stderr, "ERROR - Parameter -dm_method: No Value (ktup)\n");
-                exit(EXIT_FAILURE);
 
-            }
-        }
         else if(strm(argv[i], "-%tree")){
             i++;
             if(i<argc && argv[i][0] != '-'){
@@ -125,13 +123,13 @@ Parameters *read_parameters(int argc, char** argv){
                 exit(EXIT_FAILURE);
             }
         }
-        else if(strm(argv[i], "-outdir")){
+        else if(strm(argv[i], "-output")){
             i++;
             if(i<argc && argv[i][0] != '-'){
-                sprintf(P->outdir, "%s", argv[i]);
+                sprintf(P->output, "%s", argv[i]);
             }
             else {
-                fprintf(stderr, "ERROR - Parameter -outdir: No Value\n");
+                fprintf(stderr, "ERROR - Parameter -output: No Value\n");
                 exit(EXIT_FAILURE);
             }
         }
@@ -142,7 +140,4 @@ Parameters *read_parameters(int argc, char** argv){
 
 void printhelp(){
     fprintf(stdout, "\n******************HELP MENU***************************************************\n\n");
-    fprintf(stdout, "- USAGE: $Multiple_Trees Sequence_file.fasta (Parameters)\n");
-
-    fprintf(stdout, "\n**************************************************************************\n\n");
 }

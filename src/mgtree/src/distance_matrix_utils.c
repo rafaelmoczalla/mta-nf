@@ -28,7 +28,7 @@ void free_distance_matrix(Distance_matrix *DM){
 
 /*Create the distance matrix*/
 
-Distance_matrix *make_distance_matrix(Sequence *S, char *mode){
+Distance_matrix *make_distance_matrix(Sequence *S){
 
     Distance_matrix *DM;
     int **sim_table=NULL;
@@ -40,16 +40,11 @@ Distance_matrix *make_distance_matrix(Sequence *S, char *mode){
     int **l_s;
     float id;
 
-    fprintf(stdout, "\n---> Generationg the distance matrix\n");
     DM = declare_distance_matrix(S->nseq);
     //printf("MODE: %s\n", mode);
-    if(strm(mode, "ktup")){
-        sim_table = ktup_dist_mat(S->seq, S->nseq, ktup, S->type);
-    }
-    else {
-        fprintf(stderr, "ERROR - Bad distance matrix mode\n");
-        exit(EXIT_FAILURE);
-    }
+
+	sim_table = ktup_dist_mat(S->seq, S->nseq, ktup, S->type);
+
     //printf("SIM table fet\n");
     ns=vcalloc ( 2, sizeof(int));
     l_s=declare_int ( 2, 1);
@@ -84,7 +79,6 @@ Distance_matrix *make_distance_matrix(Sequence *S, char *mode){
     vfree (ns);
     free_int(l_s, -1);
     free_int(sim_table, -1);
-    fprintf(stdout, "---> DONE\n");
     
     return DM;
 }

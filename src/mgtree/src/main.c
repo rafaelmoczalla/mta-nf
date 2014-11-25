@@ -1,8 +1,8 @@
 /* 
  * File:   main.c
- * Author: morobitg
+ * Author: Miquel Orobitg
  *
- * Created on 21 / agost / 2014, 15:13
+ *
  */
 
 #include <stdio.h>
@@ -31,13 +31,6 @@ int main(int argc, char** argv) {
 
     P = read_parameters(argc, argv);
 
-    fprintf(stdout, "\n-------------------MULTIPLE GUIDE TREES METHOD---------------------------\n\n");           
-    fprintf(stdout, "Input Files:\n");
-    fprintf(stdout, "\tInput: (Sequences) %s.%s\n", (P->F)->name, (P->F)->suffix);
-    fprintf(stdout, "\tInput: (Distance Method) %s\n", P->dm_method);
-    fprintf(stdout, "\tInput: (Number of trees) %d\n", P->ntree);
-    fprintf(stdout, "\tOutdir:  %s\n", P->outdir);
-
     treename = (char *) vcalloc(FILENAMELEN, sizeof(char));
 
     S=read_fasta_sequences(P->seqfile);
@@ -47,14 +40,22 @@ int main(int argc, char** argv) {
         return(EXIT_FAILURE);
     }
 
-    DM = make_distance_matrix(S, P->dm_method);
-    srand(1985);
-    fprintf(stdout, "\n---> Generationg the guide trees\n");
-    for(i=0; i<P->ntree; i++){
-        sprintf(treename, "%s%s_%d.dnd", P->outdir, (P->F)->name, i);
-        make_tree(DM, S, treename, "nj", i, P->random_percentage); 
+    DM = make_distance_matrix(S);
+
+
+    if(strm(P->mode, "multiple")){
+		for(i=0; i<P->ntree; i++){
+			srand(1985+i);
+			sprintf(treename, "%s%s_%d.dnd", P->output, (P->F)->name, i);
+			make_tree(DM, S, treename, "nj", i, P->random_percentage);
+		}
     }
-    fprintf(stdout, "---> DONE\n");
+    else if (strm(P->mode, "single")){
+    	srand(1985+P->ntree);
+		sprintf(treename, "%s%s_%d.dnd", P->output, (P->F)->name, P->ntree);
+		make_tree(DM, S, treename, "nj", P->ntree, P->random_percentage);
+    }
+
     return (EXIT_SUCCESS);
 }
 

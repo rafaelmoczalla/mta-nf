@@ -19,7 +19,7 @@ typedef struct Distance_matrix Distance_matrix;
 Distance_matrix *declare_distance_matrix(int nseq);
 void free_distance_matrix(Distance_matrix *DM);
 
-Distance_matrix *make_distance_matrix(Sequence *S, char *mode);
+Distance_matrix *make_distance_matrix(Sequence *S);
 
 int **ktup_dist_mat(char **seq, int nseq, int ktup, char *type);
 int *makepointtable(int *pointt, int *n, int ktup);

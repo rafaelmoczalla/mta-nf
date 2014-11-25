@@ -1,9 +1,3 @@
-/* 
- * File:   utils.h
- * Author: morobitg
- *
- * Created on 21 / agost / 2014, 15:19
- */
 
 #ifndef UTILS_H
 #define	UTILS_H
@@ -21,8 +15,8 @@
 #include <assert.h>
 
 #define PROGRAM "mGTree"
-#define VERSION "1.0"
-#define AUTHOR "Miquel #"
+#define VERSION "1.0.1"
+#define AUTHOR "Miquel Orobitg"
 
 #define TRUE 1
 #define FALSE  0
@@ -67,7 +61,6 @@
 #define strnm(x, y, n) (vstrncmp((x), (y), (n)) == 0)
 #define is_parameter(x) (x[0]=='-' && !isdigit(x[1]))
 
-
 struct Memcontrol{
       size_t size;
       size_t size_element;
@@ -88,23 +81,18 @@ typedef struct
 Fname;
 
 FILE *openfile(const char *filename, const char *mode);
-//void ininames(char* path, char* name, char* suffix);
-//void freenames(char* path, char* name, char* suffix);
+
 Fname *declare_fname (int size);
 Fname *free_fname(Fname *F);
 Fname *parse_fname(char* array);
 
 void remove_file(char *file);
 
-//char *align_method2string(Parameters *P, char *treename, int ntree);
-//void parse_fname(const char *array, char* path, char* name, char* sufix);
 
-FILE*skip_space(FILE *fp);
+FILE* skip_space(FILE *fp);
 int name_is_in_list(char *name, char **name_list, int n_name, int len);
-//int count_n_char_in_file(const char *name);
 
 double get_time();
-
 int vstrcmp(const char *s1, const char *s2);
 int vstrncmp(const char *s1, const char *s2, int n);
 

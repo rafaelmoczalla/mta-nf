@@ -36,7 +36,7 @@ params.gep = -1
 params.matrix = "blosum62mt" 
 
 
-log.info "MTA - N F  ~  version 1.0"
+log.info "MTA - N F  ~  version 1.2"
 log.info "================================="
 log.info "Fasta sequence    : ${params.seq}"
 log.info "Number of trees   : ${params.ntree}"
@@ -83,7 +83,7 @@ process make_tree {
     script:
 
     """
-    mgtree -seq ${fasta_file} -ntree ${params.ntree}
+    mgtree -seq ${fasta_file} -mode multiple -ntree ${params.ntree}
     """
 }
 

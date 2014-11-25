@@ -1,9 +1,3 @@
-/* 
- * File:   parameters.h
- * Author: morobitg
- *
- * Created on 21 / agost / 2014, 15:23
- */
 
 #ifndef PARAMETERS_H
 #define	PARAMETERS_H
@@ -15,8 +9,8 @@
 struct Parameters{
 
     char *seqfile;
-    char *dm_method;
-    char *outdir;
+    char *mode;
+    char *output;
 
     int ntree;
     int random_percentage;

@@ -39,9 +39,7 @@ Sequence *read_fasta_sequences(char *fname){
     int c, nul;
     char *sub, *name;
 
-    fprintf(stdout, "\n---> Reading the input sequences (Fasta format)\n");
     nseq=count_nseqs(fname, '>');
-    fprintf(stdout, "\tN Seqs: %d\n", nseq);
 
     if (nseq==0){
         return NULL;
@@ -115,11 +113,6 @@ Sequence *read_fasta_sequences(char *fname){
     }
     
     S=get_sequence_type(S);
-    fprintf(stdout, "\tSequences: (%s)\n", S->type);
-    for(i=0; i < S->nseq; i++){
-        fprintf(stdout, "\t\tSeq_id: %d - %s\n", S->seq_id[i], S->seq_names[i]);
-    }
-    fprintf(stdout, "---> DONE\n");
 
     return S;
 }
