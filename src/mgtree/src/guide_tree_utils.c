@@ -353,10 +353,8 @@ void slow_nj_tree_random(char **tree_description, int tree, int nrand){
 			}
                         if(nc <= nseq_rand /*&& tree != 0*/){
                             rand_num = ((rand()/((double) RAND_MAX + 1)) * INTERVAL);
-                            //printf("\tRand Num: %lf -", rand_num);
                             diq = diq + rand_num;
                             rand_num = ((rand()/((double) RAND_MAX + 1)) * INTERVAL);
-                            //printf(" %lf\n", rand_num);
                             dij = djq + rand_num;
                         }
       
@@ -642,8 +640,6 @@ void fast_nj_tree_random(char **tree_description, int tree, int nrand){
         }
         sum_cols[j] = tmp_sum;
     }
-
-    //srand(time(NULL));
 
 /*********************** Enter The Main Cycle ***************************/
 

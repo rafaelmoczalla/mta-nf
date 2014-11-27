@@ -32,7 +32,7 @@ Parameters *default_values(Parameters *P, char *output){
     sprintf(P->output, "%s", output);
     sprintf(P->mode, "multiple");
     P->ntree = 10;
-    P->random_percentage=50;
+    P->random_percentage=100;
     return P;
 }
 

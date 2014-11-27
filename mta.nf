@@ -36,7 +36,7 @@ params.gep = -1
 params.matrix = "blosum62mt" 
 
 
-log.info "MTA - N F  ~  version 1.2"
+log.info "MTA - N F  ~  version 1.3"
 log.info "================================="
 log.info "Fasta sequence    : ${params.seq}"
 log.info "Number of trees   : ${params.ntree}"
@@ -75,6 +75,7 @@ if( !result_path.exists() && !result_path.mkdirs() ) {
 process make_tree {
     input:
     file fasta_file
+    each ntree from 0..params.ntree-1
     
     output:
     file '*.dnd' into tree mode flatten
@@ -83,9 +84,12 @@ process make_tree {
     script:
 
     """
-    mgtree -seq ${fasta_file} -mode multiple -ntree ${params.ntree}
+
+    mgtree -seq ${fasta_file} -mode single -ntree ${ntree}
+
     """
 }
+
 
 if ( params.msa=='t_coffee' ){
 
@@ -214,12 +218,13 @@ process score_tree {
 
 bigFile = sc_file.collectFile(name: 'result')
 all_aln_result = aln_result.toList()
+all_tree_result = tree_result.toList()
 
 process evaluate_scores {
     input:
     file fasta_file
     file all_aln_result
-    file tree_result
+    file all_tree_result
     file 'big_result' from bigFile
 
     output:
