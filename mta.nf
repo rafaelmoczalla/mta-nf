@@ -105,7 +105,7 @@ if ( params.msa=='t_coffee' ){
 		fileName=\$(basename "${fasta_file}")
         	baseName="\${fileName%.*}"
 
-		t_coffee ${fasta_file} -lib_only -out_lib \$baseName.lib
+		t_coffee ${fasta_file} -lib_only -out_lib \$baseName.lib -n_core=${params.cpus}
 		"""
 	}
 	
