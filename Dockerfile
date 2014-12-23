@@ -1,5 +1,9 @@
-FROM fedora:20
+FROM debian:wheezy
 MAINTAINER Paolo Di Tommaso <paolo.ditommaso@gmail.com>
+
+RUN apt-get update --fix-missing && \
+  apt-get install -q -y bc wget curl vim nano unzip make gcc g++ gfortran && \
+  apt-get clean 
 
 #
 # Create the home folder 
@@ -7,26 +11,21 @@ MAINTAINER Paolo Di Tommaso <paolo.ditommaso@gmail.com>
 RUN mkdir -p /root
 ENV HOME /root
 
-#
-# Install pre-requistes
-#
-RUN yum install -q -y bc which wget nano make gcc g++ gcc-gfortran unzip
-
 
 #
 # T-Coffee 
 #
-RUN wget -q http://www.tcoffee.org/Packages/Stable/Version_11.00.8cbe486/linux/T-COFFEE_installer_Version_11.00.8cbe486_linux_x64.tar.gz; \
-  tar xf T-COFFEE_installer_Version_11.00.8cbe486_linux_x64.tar.gz -C /root; \
-  rm -rf T-COFFEE_installer_Version_11.00.8cbe486_linux_x64.tar.gz; \
+RUN wget -q http://www.tcoffee.org/Packages/Stable/Version_11.00.8cbe486/linux/T-COFFEE_installer_Version_11.00.8cbe486_linux_x64.tar.gz && \
+  tar xf T-COFFEE_installer_Version_11.00.8cbe486_linux_x64.tar.gz -C /root && \
+  rm -rf T-COFFEE_installer_Version_11.00.8cbe486_linux_x64.tar.gz && \
   ln -s /root/T-COFFEE_installer_Version_11.00.8cbe486_linux_x64 /root/tcoffee
   
 #
 # Clustal
 #
-RUN wget -q http://www.clustal.org/download/current/clustalw-2.1-linux-x86_64-libcppstatic.tar.gz; \
-  tar xf clustalw-2.1-linux-x86_64-libcppstatic.tar.gz -C /root; \
-  rm -rf clustalw-2.1-linux-x86_64-libcppstatic.tar.gz; \
+RUN wget -q http://www.clustal.org/download/current/clustalw-2.1-linux-x86_64-libcppstatic.tar.gz && \
+  tar xf clustalw-2.1-linux-x86_64-libcppstatic.tar.gz -C /root &&\
+  rm -rf clustalw-2.1-linux-x86_64-libcppstatic.tar.gz && \
   ln -s /root/clustalw-2.1-linux-x86_64-libcppstatic /root/clustalw
   
   
@@ -34,12 +33,12 @@ RUN wget -q http://www.clustal.org/download/current/clustalw-2.1-linux-x86_64-li
 # Normd 
 # 
 RUN mkdir -p /root/bin ; \
-   wget -q ftp://ftp-igbmc.u-strasbg.fr/pub/NORMD/norMD1_3.tar.gz; \
-   tar xf norMD1_3.tar.gz ; \
-   cd normd_noexpat; \
-   make; \
-   find .  -executable -type f -exec cp "{}" /root/bin/ \;; \
-   cd -; \
+   wget -q ftp://ftp-igbmc.u-strasbg.fr/pub/NORMD/norMD1_3.tar.gz && \
+   tar xf norMD1_3.tar.gz && \
+   cd normd_noexpat && \
+   make && \
+   find .  -executable -type f -exec cp "{}" /root/bin/ \; && \
+   cd - && \
    rm -rf norMD1_3.tar.gz normd_noexpat
    
    
@@ -48,10 +47,10 @@ RUN mkdir -p /root/bin ; \
 # 
 ADD src/mgtree /root/mgtree
 
-RUN cd /root/mgtree; \
-    make clean && make; \
-    cp bin/mgtree /root/bin; \
-    cd -; \
+RUN cd /root/mgtree && \
+    make clean && make && \
+    cp bin/mgtree /root/bin && \
+    cd - && \
     rm -rf /root/mgtree   
     
 #

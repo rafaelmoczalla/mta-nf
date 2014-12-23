@@ -1,1 +1,7 @@
 .git
+.nextflow*
+work
+results
+tutorial
+Seq
+nextflow

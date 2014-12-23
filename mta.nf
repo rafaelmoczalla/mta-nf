@@ -4,18 +4,18 @@
  *
  *   This file is part of 'MTA-NF'.
  *
- *   Piper-NF is free software: you can redistribute it and/or modify
+ *   MTA-NF is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Piper-NF is distributed in the hope that it will be useful,
+ *   MTA-NF is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with Piper-NF.  If not, see <http://www.gnu.org/licenses/>.
+ *   along with MTA-NF.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* 
@@ -29,7 +29,6 @@ params.seq = "$baseDir/tutorial/12asA_1atiA.fasta"
 params.ntree = 10
 params.msa = 't_coffee'
 params.score = 'sp'
-params.cpus = 1
 params.output = './results'
 params.gop = -11
 params.gep = -1
@@ -42,7 +41,6 @@ log.info "Fasta sequence    : ${params.seq}"
 log.info "Number of trees   : ${params.ntree}"
 log.info "MSA method        : ${params.msa}"
 log.info "Score             : ${params.score}"
-log.info "cpus              : ${params.cpus}"
 log.info "ouput             : ${params.output}"
 if( params.score=='sp' )  {
 log.info "GOP               : ${params.gop}"
@@ -105,7 +103,7 @@ if ( params.msa=='t_coffee' ){
 		fileName=\$(basename "${fasta_file}")
         	baseName="\${fileName%.*}"
 
-		t_coffee ${fasta_file} -lib_only -out_lib \$baseName.lib -n_core=${params.cpus}
+		t_coffee ${fasta_file} -lib_only -out_lib \$baseName.lib -n_core=${task.cpus}
 		"""
 	}
 	
@@ -122,10 +120,10 @@ if ( params.msa=='t_coffee' ){
 
 	    script:
 	    """
-		echo ${params.cpus}
+		echo ${task.cpus}
 		fileName=\$(basename "${t}")
 		baseName="\${fileName%.*}"
-		t_coffee ${fasta_file} -usetree ${t} -lib ${tc_lib} -output=fasta -n_core=${params.cpus} -outfile=\$baseName.aln
+		t_coffee ${fasta_file} -usetree ${t} -lib ${tc_lib} -output=fasta -n_core=${task.cpus} -outfile=\$baseName.aln
 
 	    """
 	}
@@ -167,7 +165,7 @@ else {
 
 		retree < \${baseName}.tmp
 	
-		clustalo -i ${fasta_file} --guidetree-in=\${t2} --outfmt=fa --threads=${params.cpus} -o \$baseName.aln	
+		clustalo -i ${fasta_file} --guidetree-in=\${t2} --outfmt=fa --threads=${task.cpus} -o \$baseName.aln	
 	    """
 
 	}
