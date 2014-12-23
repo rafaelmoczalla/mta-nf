@@ -78,13 +78,6 @@ Pipeline parameters
 * Options: blosum30mt, blosum40mt, blosum45mt, blosum50mt, blosum55mt, blosum62mt, blosum80mt, idmat, dna_idmat, pam120mt, pam160mt, pam250mt, pam350mt, md_40mt, md_120mt, md_250mt, md_350mt.
 	* By default is set to 'blosum62mt'    
   	`$ ./nextflow run mta-nf --score sp --matrix blosum62mt`
-
-**--cpus** 
-   
-* Sets the number of CPUs used in every tasks.  
-* Involved in the task: align_tree.
-	* By default is set to the number of the available cores.   
-  	`$ ./nextflow run mta-nf --cpus 10`
   
 **--output** 
    
@@ -105,7 +98,7 @@ Install all the dependencies running the bash script install.sh.
 
 Run nextflow mta-nf command line indication all the input parameters. For example:
 
-	$ ./nextflow run mta-nf --seq /home/user/seq.fasta --ntree 100 --msa t_coffee --score sp --cpus 4 --output /home/user/results
+	$ ./nextflow run mta-nf --seq /home/user/seq.fasta --ntree 100 --msa t_coffee --score sp --output /home/user/results
 
 **Configuration file**
 
@@ -119,7 +112,6 @@ The user can modify the nextflow.config or create a new config file adding the p
 		gop = '-11'
 		gep = '-1'
 		matrix = 'blosum62mt'
-		cpus = 4
 		output = '/home/user/results'
 	}
 
