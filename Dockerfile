@@ -54,6 +54,11 @@ RUN cd /root/mgtree && \
     rm -rf /root/mgtree   
     
 #
+# ps tool 
+#
+RUN apt-get install -y procps      
+    
+#
 # Finalize environment
 #
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/tcoffee/bin:/root/clustalw:/root/bin
