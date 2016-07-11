@@ -6,7 +6,7 @@ machine:
     
 test:
   override:
-    - ./nextflow -download
+    - curl -fsSL get.nextflow.io | bash
     - docker pull cbcrg/mta-nf
     - ./nextflow run . -with-docker
     
