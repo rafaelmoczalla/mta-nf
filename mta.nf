@@ -110,7 +110,7 @@ if ( params.msa=='t_coffee' ){
 	process align_tree {
 	    input:
 	    file fasta_file
-	    file tc_lib from tc_lib.first()
+	    file tc_lib from tc_lib
 	    file t from tree
 	    
 
@@ -214,16 +214,12 @@ process score_tree {
 }
 
 
-bigFile = sc_file.collectFile(name: 'result')
-all_aln_result = aln_result.toList()
-all_tree_result = tree_result.toList()
-
 process evaluate_scores {
     input:
     file fasta_file
-    file all_aln_result
-    file all_tree_result
-    file 'big_result' from bigFile
+    file all_aln_result from aln_result.collect()
+    file all_tree_result from tree_result.collect()
+    file 'big_result' from sc_file.collectFile(name: 'result')
 
     output:
     file "*.sc" into res_sc
