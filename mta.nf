@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 /*
- * Copyright (c) 2014, Centre for Genomic Regulation (CRG) and the authors.
+ * Copyright (c) 2014-2018, Centre for Genomic Regulation (CRG) and the authors.
  *
  *   This file is part of 'MTA-NF'.
  *
