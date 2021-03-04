@@ -12,7 +12,7 @@ mkdir -p $GZ
 
 #T-Coffee
 wget -P ${GZ} http://www.tcoffee.org/Packages/Stable/Latest/T-COFFEE_installer_Version_13.45.0.4846264_linux_x64.tar.gz
-tar xvzf ${GZ}/T-COFFEE_installer_Version_11.00.8cbe486_linux_x64.tar.gz -C ${SRC}
+tar xvzf ${GZ}/T-COFFEE_installer_Version_13.45.0.4846264_linux_x64.tar.gz -C ${SRC}
 cd ${SRC}/T-COFFEE_installer_Version_11.00.8cbe486_linux_x64/src
 make -f makefile
 cp t_coffee ${dir}/${BIN}
@@ -40,7 +40,7 @@ cp bin/mgtree $dir/$BIN
 #PHYLIP
 cd $dir
 wget -P ${GZ} https://evolution.gs.washington.edu/phylip/download/phylip-3.697.tar.gz
-tar xvzf ${GZ}/phylip-3.696.tar.gz -C ${SRC}
+tar xvzf ${GZ}/phylip-3.697.tar.gz -C ${SRC}
 cd $SRC/phylip-3.696/src
 make -f Makefile.unx install
 cd $dir
